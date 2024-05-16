@@ -1,6 +1,6 @@
 from .User import *
 from .DiceGame import Dice_Game
-
+dice_game=Dice_Game()
 class user_manager:
 		
 	user_accounts={}
@@ -23,22 +23,28 @@ class user_manager:
 	def validate_password(self,username):
 		password= input("Password: ")
 		if self.user_accounts[username].password == password:
-			Dice_Game.menu()
+			dice_game.menu(username)
 		else:
-			print("Wrong password")
+			input("Wrong password\n")
 		
 	def register(self):
-		username = input("Enter username: ")
-		if username in self.user_accounts:
-			print("Username already exists.")
-			input()
+		username = input("Enter username(atleast 4 characters): ")
+		if len(username)<4:
+			input("Usernames must be atleast 4 characters,try again.\n")
 			return
 		else:
-			password = input("Enter password: ")
-			self.user_accounts[username] = {"Username":username, "Password":password, "Budget" : 0,"Redeemable points":0,"Inventory":[]}
-			print("Account created!")
+			if username in self.user_accounts:
+				input("Username already exists.\n")
+				return
+			else:
+				password = input("Enter password(atleast 8 characters): ")
+				if len(password)<8:
+					input("Password must be atleast 8 characters long,try again.\n")
+					return
+				else:
+					self.user_accounts[username]=Users(username,password)
+					print("Account created!\n")
 
 	def login(self):
 		username= input("Enter username: ")
-		if self.validate_username(username)==True:
-		    print("Logged in!")
+		self.validate_username(username)
