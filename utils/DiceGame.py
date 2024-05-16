@@ -1,5 +1,9 @@
+import random
+
 class Dice_Game:
 
+	def roll_dice():
+		return random.randint(1,6)
 	
 	def Inputs(max,message):
 		try:
@@ -25,8 +29,15 @@ class Dice_Game:
 	def save_scores():
 		pass
 
-	def play_game():
-		pass
+	def play_game(username):
+		for i in range(3):
+			print(f"starting game as {username}...")
+			player_rolled_dice=Dice_Game.roll_dice()
+			print(f"{username} rolled: {player_rolled_dice}")
+			cpu_rolled_dice=Dice_Game.roll_dice()
+			print(f"CPU rolled: {cpu_rolled_dice}")
+		
+
 
 	def show_top_scores():
 		pass

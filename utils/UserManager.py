@@ -2,9 +2,6 @@ from .User import *
 from .DiceGame import Dice_Game
 
 class user_manager:
-	def __init__(self,username,password):
-		self.username=username
-		self.password=password
 		
 	user_accounts={}
 	
@@ -15,17 +12,17 @@ class user_manager:
 	def save_users():
 		pass
 
-	def validate_username(self):
-		if self.username in self.user_accounts:
-			self.validate_password(self,self.username,self.password)
+	def validate_username(self,username):
+		if username in self.user_accounts:
+			self.validate_password(username)
 		else:
 			print("Username does not exist.")
 			input()
 			return
 		
-	def validate_password(self,password):
-		self.password= input("Password: ")
-		if self.user_accounts[self.username].password == password:
+	def validate_password(self,username):
+		password= input("Password: ")
+		if self.user_accounts[username].password == password:
 			Dice_Game.menu()
 		else:
 			print("Wrong password")
@@ -43,5 +40,5 @@ class user_manager:
 
 	def login(self):
 		username= input("Enter username: ")
-		if self.validate_username(username,self.password)==True:
+		if self.validate_username(username)==True:
 		    print("Logged in!")
