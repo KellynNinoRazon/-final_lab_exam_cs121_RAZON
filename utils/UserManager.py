@@ -1,3 +1,4 @@
+import os
 from .User import *
 from .DiceGame import Dice_Game
 dice_game=Dice_Game()
@@ -5,12 +6,21 @@ class user_manager:
 		
 	user_accounts={}
 	
-	def load_users(self):
-		pass
-		
-
-	def save_users():
-		pass
+	def load_user(self):
+		if not os.path.exists("Users.txt"):
+			with open('Users.txt', 'w') as f:
+				f.write("")
+				
+		else:
+			with open("Users.txt", 'r') as f:
+				for line in f:
+					user = line.strip().split(',')
+					self.user_accounts[user[0]] = Users(user[0], user[1])
+					
+	def save_users(self):
+		with open('Users.txt', 'w') as f:
+			for username, password in self.user_accounts.items():
+				f.write(f'{username},{password.password}\n')
 
 	def validate_username(self,username):
 		if username in self.user_accounts:
