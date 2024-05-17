@@ -5,8 +5,7 @@ import os
 import datetime
 
 class Dice_Game:
-	def __init__(self):
-		self.scores={}
+	scores={}
 		
 	score=0
 	win=0
@@ -105,30 +104,14 @@ class Dice_Game:
 				return
 			if choice1==1:
 				continue
+	def sort_key(self, score):
+		return (score.score, score.win)
+	
 	def show_top_scores(self):
-		print("LEADERBOARDS\n")
-		for i in range(len(self.scores)):
-			if i > 9: break
-			usernname = list(self.scores[i].keys())[0]
-			score = self.scores[i][usernname].score
-			win = self.scores[i][self.username].win
-			print(f"{i+1}. {self.username}    Score: {score}    Win Streak: {win}")
-		'''with open('Scores.txt', 'r') as f:
-			lines = f.readlines()
-			
-		scores = []
-		for line in lines:
-			values = line.strip().split(',')
-			username = values[0]
-			score = int(values[1])
-			win = int(values[2])
-			Game_Id = values[3]
-			scores.append(Scores(username, score, win, Game_Id))
-			
-		scores.sort(key=lambda x: x.score, reverse=True)
-		print("Top 10 Scores (Highest Wins):\n")
-		for score,(username, score, win, Game_Id) in enumerate(scores[:10], start=1):
-			print(f"{score}. Username: {username}, Wins: {win}, Points: {score}, GameID: {Game_Id}")'''
+		sorted_scores = sorted(self.scores.values(), key=self.sort_key, reverse=True)
+		print("\n\nTop Scores:")
+		for rank, score in enumerate(sorted_scores[:10], start=1):
+			print(f"{rank}. {score.username}: Score: {score.score}, Stages won: {score.win}")
 
 	def logout(self):
 		return
