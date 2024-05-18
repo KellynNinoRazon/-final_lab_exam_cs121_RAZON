@@ -12,8 +12,9 @@ class Dice_Game:
 
 	def roll_dice():
 		return random.randint(1,6)
-			
-	def load_scores(self):
+	
+	#Trying out diff codes
+	'''def load_scores(self):
 		self.scores = {}
 		if not os.path.exists("Scores.txt"):
 			with open('Scores.txt', 'w') as f:
@@ -28,37 +29,52 @@ class Dice_Game:
 					Game_Id = values[3]
 					if username not in self.scores:
 						self.scores[username] = []
-						self.scores[username]=(Scores(username,score,win, Game_Id))
+						self.scores[username].append(Scores(username,score,win, Game_Id))
 
 	def save_scores(self):
 		with open('Scores.txt', 'w') as f:
 			for scores in self.scores.values():
 				for Scores in scores:
-					f.write(f"{Scores.username},{Scores.score},{Scores.win},{Scores.Game_Id}\n")
+					f.write(f"{Scores.username},{Scores.score},{Scores.win},{Scores.Game_Id}\n")'''
 				
 	def show_top_score(self):
 		with open('Scores.txt', 'r') as f:
-			lines = f.readlines()
-			
-			scores = []
-			for line in lines:
+			sorted_scores = []
+			for line in f:
 				values = line.strip().split(',')
-				username = values[0]
-				score= int(values[1])
-				win = int(values[2])
-				Game_Id = values[3]
-				scores.append(Scores(username, score, win,Game_Id))
-				
-			Scores.sort(key=lambda x: x[1], reverse=True)
-			
+				username, score, win, Game_Id = values[:4]
+				score = int(score)
+				win = int(win)
+				sorted_scores.append(Scores(username, score, win, Game_Id))
+			sorted_scores.sort(key=lambda x: x.score, reverse=True)
 			print("Top 10 Scores (Highest Wins):\n")
-			for i, (username, score, win, Game_Id) in enumerate(scores[:10], start=1):
-				print(f"{i}. Username: {username}, Wins: {win}, Score: {score}, GameID: {Game_Id}")
+			for i, score_entry in enumerate(sorted_scores[:10], start=1):
+				print(f"{i}. Username: {score_entry.username}, Wins: {score_entry.win}, Score: {score_entry.score}, GameID: {score_entry.Game_Id}")
+
+				
+	def load_scores(self):
+		self.scores = {}
+		if os.path.exists("Scores.txt"):
+			with open('Scores.txt', 'r') as f:
+				for line in f:
+					values = line.strip().split(',')
+					username, score, win, game_id = values[:4]
+					score = int(score)
+					win = int(win)
+					if username not in self.scores:
+						self.scores[username] = []
+					self.scores[username].append(Scores(username, score, win, game_id))
+					
+	def save_scores(self):
+		with open('Scores.txt', 'w') as f:
+			for scores in self.scores.values():
+				for score_entry in scores:
+					f.write(f"{score_entry.username},{score_entry.score},{score_entry.win},{score_entry.game_id}\n")
 
 	def save_and_reset(self, username):
 		Game_Id = datetime.datetime.now().strftime("%Y%m%d%H%M")
 		if username in self.scores:
-			self.scores[username]=(Scores(username, self.score, self.win, Game_Id))
+			self.scores[username].append[Scores(username, self.score, self.win, Game_Id)]
 		else:
 			self.scores[username].append[Scores(username, self.score, self.win, Game_Id)]
 			self.save_scores()
@@ -104,11 +120,11 @@ class Dice_Game:
 				return
 			if choice1==1:
 				continue
-	def sort_key(self, score):
-		return (score.score, score.win)
+	def sort_key(self, score,win):
+		return (score, win)
 	
 	def show_top_scores(self):
-		sorted_scores = sorted(self.scores.values(), key=self.sort_key, reverse=True)
+		sorted_scores = sorted(self.scores.values(), key=lambda x: self.sort_key(x[1], x[2]), reverse=True)
 		print("\n\nTop Scores:")
 		for rank, score in enumerate(sorted_scores[:10], start=1):
 			print(f"{rank}. {score.username}: Score: {score.score}, Stages won: {score.win}")
@@ -127,6 +143,6 @@ class Dice_Game:
 			if choice==1:
 				Dice_Game.play_game(self,username)
 			if choice==2:
-				Dice_Game.show_top_scores(self)
+				Dice_Game.show_top_score(self)
 			if choice==3:
 				return
